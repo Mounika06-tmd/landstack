@@ -1,0 +1,5126 @@
+<!DOCTYPE html>
+<html lang="en" id="landStackHtml">
+    <!-- =========================================================
+     LANDSTACK LANGUAGE SYSTEM
+     ========================================================= -->
+
+<script>
+
+    window.landStackLanguage =
+        localStorage.getItem("landStackLanguage") ||
+        "en";
+
+</script>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        LandStack - Digital Land Governance Platform
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+
+    <style>
+
+        /* =========================================================
+           LANDSTACK OFFICIAL PORTAL DESIGN
+           ========================================================= */
+
+        :root {
+
+    --ls-navy: #126b3a;
+    --ls-navy-dark: #084d2b;
+    --ls-blue: #2f8a5b;
+    --ls-blue-soft: #e8f4ed;
+
+    --ls-bg: #f5f8f5;
+    --ls-white: #ffffff;
+
+    --ls-border: #cbded3;
+    --ls-border-dark: #b4cdbd;
+
+    --ls-text: #24352d;
+    --ls-muted: #5f7067;
+
+    --ls-green: #126b3a;
+    --ls-green-soft: #f3f9f5;
+
+    --ls-red: #7b3737;
+    --ls-gold: #d49a22;
+
+            --ls-shadow:
+                0 2px 8px rgba(
+                    30,
+                    52,
+                    67,
+                    0.08
+                );
+
+        }
+
+
+        /* =========================================================
+           GENERAL
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            background:
+                var(--ls-bg);
+
+            color:
+                var(--ls-text);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size:
+                15px;
+
+            line-height:
+                1.55;
+
+        }
+
+
+        button,
+        input,
+        select,
+        textarea {
+
+            font-family:
+                inherit;
+
+        }
+
+
+        button {
+
+            cursor:
+                pointer;
+
+            border:
+                1px solid
+                var(--ls-navy-dark);
+
+            border-radius:
+                4px;
+
+            background:
+                var(--ls-navy);
+
+            color:
+                #ffffff;
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+            padding:
+                9px 15px;
+
+            min-height:
+                38px;
+
+            box-shadow:
+                none;
+
+            transition:
+                background-color 0.15s ease,
+                border-color 0.15s ease;
+
+        }
+
+
+        button:hover {
+
+            background:
+                var(--ls-navy-dark);
+
+            border-color:
+                var(--ls-navy-dark);
+
+        }
+
+
+        button:focus {
+
+            outline:
+                2px solid
+                rgba(
+                    31,
+                    95,
+                    139,
+                    0.22
+                );
+
+            outline-offset:
+                2px;
+
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width:
+                100%;
+
+            padding:
+                10px 11px;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                4px;
+
+            background:
+                #ffffff;
+
+            color:
+                var(--ls-text);
+
+            font-size:
+                14px;
+
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            outline:
+                2px solid
+                rgba(
+                    31,
+                    95,
+                    139,
+                    0.15
+                );
+
+            border-color:
+                var(--ls-blue);
+
+        }
+
+
+        label {
+
+            display:
+                block;
+
+            margin-top:
+                12px;
+
+            margin-bottom:
+                5px;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        h1,
+        h2,
+        h3,
+        h4 {
+
+            color:
+                var(--ls-navy);
+
+        }
+
+
+        hr {
+
+            border:
+                0;
+
+            border-top:
+                1px solid
+                var(--ls-border);
+
+            margin:
+                22px 0;
+
+        }
+
+
+        p {
+
+            margin-top:
+                6px;
+
+            margin-bottom:
+                8px;
+
+        }
+
+
+        /* =========================================================
+           MAIN APPLICATION WRAPPER
+           ========================================================= */
+
+        .auth-container {
+
+            width:
+                100%;
+
+            min-height:
+                100vh;
+
+            background:
+                var(--ls-bg);
+
+        }
+
+
+        /* =========================================================
+           GOVERNMENT-STYLE TOP IDENTITY AREA
+           ========================================================= */
+
+        .auth-container > h1 {
+
+            margin:
+                0;
+
+            padding:
+                32px 20px 4px;
+
+            text-align:
+                center;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                32px;
+
+            font-weight:
+                700;
+
+            letter-spacing:
+                0.2px;
+
+        }
+
+
+        .auth-container > p {
+
+            margin:
+                0 0 25px;
+
+            text-align:
+                center;
+
+            color:
+                var(--ls-muted);
+
+            font-size:
+                15px;
+
+        }
+
+
+        /* =========================================================
+           AUTH BOX
+           ========================================================= */
+
+        .auth-box {
+
+            width:
+                92%;
+
+            max-width:
+                520px;
+
+            margin:
+                20px auto 35px;
+
+            padding:
+                30px;
+
+            background:
+                var(--ls-white);
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                5px solid
+                var(--ls-navy);
+
+            border-radius:
+                5px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .auth-box h2 {
+
+            margin:
+                4px 0 12px;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                21px;
+
+        }
+
+
+        .auth-box input {
+
+            margin:
+                4px 0 7px;
+
+        }
+
+
+        .auth-box button {
+
+            width:
+                100%;
+
+            margin:
+                10px 0 5px;
+
+        }
+
+
+        .auth-box p {
+
+            color:
+                var(--ls-muted);
+
+        }
+
+
+        /* =========================================================
+           VIEW SELECTION
+           ========================================================= */
+
+    #viewSelection {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+        #viewSelection > h2 {
+
+            margin-top:
+                0;
+
+        }
+
+
+        #viewSelection > button {
+
+            width:
+                100%;
+
+            margin:
+                8px 0;
+
+        }
+
+
+        /* =========================================================
+           CITIZEN APPLICATION
+           ========================================================= */
+
+        #citizenView {
+
+            width:
+                100%;
+
+            min-height:
+                100vh;
+
+            background:
+                var(--ls-bg);
+
+        }
+
+
+        .citizen-app-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            padding:
+                18px 28px;
+
+            background:
+                var(--ls-navy);
+
+            color:
+                #ffffff;
+
+            border-bottom:
+                4px solid
+                var(--ls-blue);
+
+        }
+
+
+        .citizen-app-header h1 {
+
+            margin:
+                0;
+
+            color:
+                #ffffff;
+
+            font-size:
+                25px;
+
+        }
+
+
+        .citizen-app-header p {
+
+            margin:
+                3px 0 0;
+
+            color:
+                #d9e4eb;
+
+        }
+
+
+        .citizen-status {
+
+            padding:
+                7px 13px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.12
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.28
+                );
+
+            border-radius:
+                3px;
+
+            color:
+                #ffffff;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        /* =========================================================
+           CITIZEN TOOLBAR
+           ========================================================= */
+
+        .citizen-toolbar {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                6px;
+
+            padding:
+                10px 20px;
+
+            background:
+                #ffffff;
+
+            border-bottom:
+                1px solid
+                var(--ls-border);
+
+        }
+
+
+        .citizen-toolbar button {
+
+            width:
+                auto;
+
+            min-height:
+                36px;
+
+            padding:
+                8px 13px;
+
+            background:
+                #ffffff;
+
+            color:
+                var(--ls-navy);
+
+            border:
+                1px solid
+                var(--ls-border-dark);
+
+        }
+
+
+        .citizen-toolbar button:hover {
+
+            background:
+                var(--ls-blue-soft);
+
+        }
+
+
+        /* =========================================================
+           CITIZEN CONTENT
+           ========================================================= */
+
+        .citizen-content {
+
+            padding:
+                20px;
+
+        }
+
+
+        .citizen-layout {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        57%
+        43%;
+
+    gap:
+        20px;
+
+    align-items:
+        start;
+
+}
+
+.citizen-sidebar,
+.map-panel {
+
+    min-width:
+        0;
+
+}
+
+
+        .citizen-sidebar {
+
+            background:
+                var(--ls-white);
+
+            padding:
+                20px;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                5px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .citizen-sidebar h3 {
+
+            margin-top:
+                0;
+
+            color:
+                var(--ls-navy);
+
+        }
+
+
+        /* =========================================================
+           PARCEL COUNT
+           ========================================================= */
+
+        .parcel-count-card {
+
+            padding:
+                15px;
+
+            margin-bottom:
+                18px;
+
+            background:
+                var(--ls-blue-soft);
+
+            border:
+                1px solid
+                #c6d8e4;
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .parcel-count-card strong {
+
+            display:
+                block;
+
+            margin:
+                3px 0;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                28px;
+
+        }
+
+
+        .parcel-count-card span {
+
+            color:
+                var(--ls-muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* =========================================================
+           CITIZEN SEARCH
+           ========================================================= */
+
+        .search-section {
+
+            margin-top:
+                16px;
+
+            padding:
+                17px;
+
+            background:
+                #fafbfc;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                3px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .search-section h3 {
+
+            margin-top:
+                0;
+
+        }
+
+
+        .search-section input {
+
+            margin:
+                4px 0 7px;
+
+        }
+
+
+        .search-section button {
+
+            width:
+                100%;
+
+            margin-top:
+                8px;
+
+        }
+
+
+        /* =========================================================
+           MY LAND
+           ========================================================= */
+
+        #myLandSection {
+
+            margin-top:
+                18px;
+
+            padding:
+                18px;
+
+            background:
+                #fafbfc;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+        }
+
+
+        #myLandSection h3 {
+
+            margin-top:
+                0;
+
+        }
+
+
+        #myLandSection button {
+
+            width:
+                100%;
+
+            margin-top:
+                8px;
+
+        }
+
+
+        #myLandOtpBox {
+
+            margin-top:
+                15px;
+
+            padding-top:
+                14px;
+
+        }
+
+
+        #myLandOtpBox p {
+
+            color:
+                var(--ls-muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* =========================================================
+           PARCEL INFORMATION
+           ========================================================= */
+
+        .parcel-info {
+
+            margin-top:
+                18px;
+
+            padding:
+                18px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .parcel-info h3 {
+
+            margin-top:
+                0;
+
+        }
+
+
+        /* =========================================================
+           MAP PANEL
+           ========================================================= */
+
+        .map-panel {
+
+            padding:
+                15px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                5px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .map-panel-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                12px;
+
+        }
+
+
+        .map-panel-header h2 {
+
+            margin:
+                0;
+
+            color:
+                var(--ls-navy);
+
+        }
+
+
+        .map-panel-header p {
+
+            margin-bottom:
+                0;
+
+            color:
+                var(--ls-muted);
+
+        }
+
+
+        .map-selection-status {
+
+            padding:
+                7px 11px;
+
+            background:
+                #f0f3f5;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                3px;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        #map {
+
+            width:
+                100%;
+
+            height:
+                700px;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                4px;
+
+        }
+
+
+        /* =========================================================
+           OFFICER APPLICATION
+           ========================================================= */
+
+        #officerView {
+
+            width:
+                100%;
+
+            min-height:
+                100vh;
+
+            background:
+                var(--ls-bg);
+
+        }
+
+
+        .officer-app-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            padding:
+                18px 28px;
+
+            background:
+                var(--ls-navy);
+
+            color:
+                #ffffff;
+
+            border-bottom:
+                4px solid
+                var(--ls-blue);
+
+        }
+
+
+        .officer-app-header h1 {
+
+            margin:
+                0;
+
+            color:
+                #ffffff;
+
+            font-size:
+                25px;
+
+        }
+
+
+        .officer-app-header p {
+
+            margin:
+                3px 0 0;
+
+            color:
+                #d9e4eb;
+
+        }
+
+
+        .officer-header-status {
+
+            padding:
+                7px 13px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.12
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.28
+                );
+
+            border-radius:
+                3px;
+
+            color:
+                #ffffff;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .status-dot {
+
+            display:
+                inline-block;
+
+            width:
+                8px;
+
+            height:
+                8px;
+
+            margin-right:
+                5px;
+
+            border-radius:
+                50%;
+
+            background:
+                #7fc49b;
+
+        }
+
+
+        /* =========================================================
+           OFFICER TOOLBAR
+           ========================================================= */
+
+        .officer-toolbar {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                5px;
+
+            padding:
+                10px 20px;
+
+            background:
+                #ffffff;
+
+            border-bottom:
+                1px solid
+                var(--ls-border);
+
+        }
+
+
+        .officer-toolbar button {
+
+            width:
+                auto;
+
+            min-height:
+                36px;
+
+            padding:
+                8px 13px;
+
+            background:
+                #ffffff;
+
+            color:
+                var(--ls-navy);
+
+            border:
+                1px solid
+                var(--ls-border-dark);
+
+        }
+
+
+        .officer-toolbar button:hover {
+
+            background:
+                var(--ls-blue-soft);
+
+        }
+
+
+        /* =========================================================
+           OFFICER SECTIONS
+           ========================================================= */
+
+        .officer-section {
+
+            max-width:
+                1500px;
+
+            margin:
+                auto;
+
+            padding:
+                25px;
+
+        }
+
+
+        .officer-welcome {
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .officer-welcome h2 {
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .officer-welcome p {
+
+            color:
+                var(--ls-muted);
+
+        }
+
+
+        /* =========================================================
+           OFFICER STATISTICS
+           ========================================================= */
+
+        .officer-stat-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    1fr
+                );
+
+            gap:
+                12px;
+
+            margin-bottom:
+                18px;
+
+        }
+
+
+        .officer-stat-card {
+
+            padding:
+                19px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                3px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .officer-stat-card strong {
+
+            display:
+                block;
+
+            margin:
+                6px 0;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                24px;
+
+        }
+
+
+        .officer-stat-card span {
+
+            display:
+                block;
+
+            color:
+                var(--ls-muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        .officer-stat-card
+        .officer-stat-title {
+
+            color:
+                var(--ls-text);
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        /* =========================================================
+           OFFICER PANELS
+           ========================================================= */
+
+        .officer-panel {
+
+            margin-top:
+                18px;
+
+            padding:
+                20px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .officer-panel h3 {
+
+            margin-top:
+                0;
+
+        }
+
+
+        /* =========================================================
+           OFFICER ACTION GRID
+           ========================================================= */
+
+        .officer-action-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap:
+                10px;
+
+        }
+
+
+        .officer-action-grid button {
+
+            width:
+                100%;
+
+        }
+
+
+        /* =========================================================
+           OFFICER SYSTEM INFORMATION
+           ========================================================= */
+
+        .officer-info-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    1fr
+                );
+
+            gap:
+                10px;
+
+        }
+
+
+        .officer-info-grid div {
+
+            padding:
+                14px;
+
+            background:
+                #f8fafb;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .officer-info-grid strong,
+        .officer-info-grid span {
+
+            display:
+                block;
+
+        }
+
+
+        .officer-info-grid strong {
+
+            color:
+                var(--ls-navy);
+
+        }
+
+
+        .officer-info-grid span {
+
+            margin-top:
+                4px;
+
+            color:
+                var(--ls-muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* =========================================================
+           OFFICER MAP
+           ========================================================= */
+
+        .officer-section-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                15px;
+
+        }
+
+
+        .officer-section-header h2 {
+
+            margin:
+                0 0 3px;
+
+        }
+
+
+        .officer-section-header p {
+
+            margin:
+                0;
+
+            color:
+                var(--ls-muted);
+
+        }
+
+
+        .officer-map-status {
+
+            padding:
+                7px 12px;
+
+            background:
+                #f0f3f5;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                3px;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .officer-map-toolbar {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+
+            margin-bottom:
+                12px;
+
+        }
+
+
+        .officer-map-toolbar button {
+
+            background:
+                #ffffff;
+
+            color:
+                var(--ls-navy);
+
+            border:
+                1px solid
+                var(--ls-border-dark);
+
+        }
+
+
+        .officer-map-toolbar button:hover {
+
+            background:
+                var(--ls-blue-soft);
+
+        }
+
+
+        #officerMap {
+
+            width:
+                100%;
+
+            height:
+                650px;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .officer-parcel-panel {
+
+            margin-top:
+                18px;
+
+            padding:
+                20px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        /* =========================================================
+           OFFICER SEARCH
+           ========================================================= */
+
+        .officer-search-panel {
+
+            max-width:
+                650px;
+
+            padding:
+                20px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .officer-search-panel input {
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .officer-search-buttons {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+
+            margin-top:
+                14px;
+
+        }
+
+
+        .officer-search-buttons button {
+
+            width:
+                auto;
+
+        }
+
+
+        /* =========================================================
+           VERIFICATION
+           ========================================================= */
+
+        .verification-status-card {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap:
+                12px;
+
+            padding:
+                20px;
+
+            margin-bottom:
+                18px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-top:
+                4px solid
+                var(--ls-navy);
+
+            border-radius:
+                4px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .verification-status-card span {
+
+            display:
+                block;
+
+            color:
+                var(--ls-muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        .verification-status-card strong {
+
+            display:
+                block;
+
+            margin-top:
+                5px;
+
+            color:
+                var(--ls-navy);
+
+            font-size:
+                18px;
+
+        }
+
+
+        .verification-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap:
+                12px;
+
+        }
+
+
+        .verification-card {
+
+            padding:
+                18px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                var(--ls-border);
+
+            border-radius:
+                4px;
+
+            box-shadow:
+                var(--ls-shadow);
+
+        }
+
+
+        .verification-card h3 {
+
+            margin-top:
+                0;
+
+        }
+
+
+        .verification-card p {
+
+            min-height:
+                40px;
+
+            color:
+                var(--ls-muted);
+
+        }
+
+
+        .verification-card button {
+
+            width:
+                100%;
+
+        }
+
+
+        .verification-actions {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+
+        }
+
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        .officer-footer {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            padding:
+                18px 25px;
+
+            margin-top:
+                15px;
+
+            background:
+                var(--ls-navy-dark);
+
+            color:
+                #dbe5eb;
+
+            font-size:
+                13px;
+
+            border-top:
+                3px solid
+                var(--ls-blue);
+
+        }
+
+
+        /* =========================================================
+           LEAFLET
+           ========================================================= */
+
+        .leaflet-control-zoom a {
+
+            background:
+                #ffffff !important;
+
+            color:
+                var(--ls-navy) !important;
+
+            border-color:
+                var(--ls-border) !important;
+
+        }
+        .parcel-number-label {
+    background: rgba(255, 255, 255, 0.90);
+    border: 1px solid #123b5d;
+    border-radius: 2px;
+    color: #123b5d;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 4px;
+    box-shadow: none;
+}
+
+.parcel-number-label::before {
+    display: none;
+}
+
+
+        .leaflet-control-scale-line {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.92
+                ) !important;
+
+            color:
+                var(--ls-navy) !important;
+
+            border-color:
+                var(--ls-navy) !important;
+
+            font-size:
+                11px !important;
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (
+            max-width: 1100px
+        ) {
+
+            .citizen-layout {
+
+    grid-template-columns:
+        56%
+        44%;
+
+}
+
+
+            .officer-stat-grid,
+            .officer-info-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+
+            }
+
+
+            .verification-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+
+            }
+
+        }
+
+
+        @media (
+            max-width: 800px
+        ) {
+
+            .citizen-app-header,
+            .officer-app-header,
+            .map-panel-header,
+            .officer-section-header,
+            .officer-footer {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+
+            }
+
+
+            .citizen-layout {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .officer-action-grid,
+            .officer-stat-grid,
+            .officer-info-grid,
+            .verification-grid,
+            .verification-status-card {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .citizen-content,
+            .officer-section {
+
+                padding:
+                    12px;
+
+            }
+
+
+            .auth-box {
+
+                padding:
+                    22px;
+
+            }
+
+
+            #map {
+
+                height:
+                    560px;
+
+            }
+
+
+            #officerMap {
+
+                height:
+                    520px;
+
+            }
+
+
+            .citizen-toolbar,
+            .officer-toolbar {
+
+                padding:
+                    9px 12px;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           NO FLASHY VISUAL EFFECTS
+           ========================================================= */
+
+        *,
+        *::before,
+        *::after {
+
+            animation:
+                none !important;
+
+        }
+/* =========================================================
+   OFFICER MAP PARCEL NUMBERS
+   ========================================================= */
+
+.parcel-number-label {
+    background: rgba(255, 255, 255, 0.90);
+    border: 1px solid #31495b;
+    border-radius: 3px;
+    color: #24313b;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 4px;
+    box-shadow: none;
+}
+
+.parcel-number-label::before {
+    display: none;
+}
+/* =========================================================
+   LANDSTACK HOMEPAGE REDESIGN
+   Government / Public Service Style
+   ========================================================= */
+
+:root {
+    --ls-green-main: #126b3a;
+    --ls-green-dark: #084d2b;
+    --ls-green-light: #e8f4ed;
+    --ls-green-soft: #f3f9f5;
+    --ls-gold: #d49a22;
+    --ls-gold-light: #fff5dc;
+    --ls-home-text: #173b2a;
+    --ls-home-muted: #5f7067;
+}
+
+
+/* =========================================================
+   HOMEPAGE
+   ========================================================= */
+
+#landStackHome {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f8f5;
+}
+
+
+/* =========================================================
+   TOP NAVIGATION
+   ========================================================= */
+
+.landstack-topbar {
+    width: 100%;
+    min-height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+    padding: 10px 5%;
+
+    background: var(--ls-green-dark);
+    color: #ffffff;
+
+    border-bottom: 4px solid var(--ls-gold);
+
+    position: relative;
+    z-index: 100;
+}
+
+
+.landstack-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.landstack-brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+    color: var(--ls-green-dark);
+
+    border-radius: 50%;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+
+.landstack-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.landstack-brand-text strong {
+    color: #ffffff;
+    font-size: 21px;
+    line-height: 1.1;
+}
+
+
+.landstack-brand-text span {
+    color: #d9eee1;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+
+.landstack-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+
+.landstack-nav button {
+    width: auto;
+    min-height: 36px;
+
+    margin: 0;
+
+    padding: 7px 13px;
+
+    background: transparent;
+    color: #ffffff;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.landstack-nav button:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.25);
+}
+
+
+.landstack-login-btn {
+    background: #ffffff !important;
+    color: var(--ls-green-dark) !important;
+
+    border: 1px solid #ffffff !important;
+
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+}
+
+
+.landstack-login-btn:hover {
+    background: var(--ls-gold-light) !important;
+    color: var(--ls-green-dark) !important;
+}
+
+
+/* =========================================================
+   HERO SECTION
+   ========================================================= */
+
+.landstack-hero {
+    position: relative;
+
+    min-height: 470px;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+background:
+    linear-gradient(
+        135deg,
+        #084d2b 0%,
+        #126b3a 55%,
+        #1d7d49 100%
+    );
+
+background-size: cover;
+background-position: center;
+}
+
+
+.landstack-hero-content {
+    width: 100%;
+    max-width: 1250px;
+
+    margin: 0 auto;
+    padding: 60px 6%;
+
+    color: #ffffff;
+}
+
+
+.landstack-hero-tag {
+    display: inline-block;
+
+    padding: 6px 12px;
+    margin-bottom: 15px;
+
+    background: rgba(255,255,255,0.14);
+
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 20px;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+
+.landstack-hero h2 {
+    max-width: 700px;
+
+    margin: 0 0 15px;
+
+    color: #ffffff;
+
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.08;
+
+    font-weight: 800;
+}
+
+
+.landstack-hero p {
+    max-width: 680px;
+
+    margin: 0 0 24px;
+
+    color: #edf7f0;
+
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+.landstack-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+.landstack-hero-primary {
+    width: auto;
+
+    margin: 0;
+
+    padding: 11px 20px;
+
+    background: #ffffff;
+    color: var(--ls-green-dark);
+
+    border: 1px solid #ffffff;
+}
+
+
+.landstack-hero-primary:hover {
+    background: var(--ls-gold-light);
+    color: var(--ls-green-dark);
+}
+
+
+.landstack-hero-secondary {
+    width: auto;
+
+    margin: 0;
+
+    padding: 11px 20px;
+
+    background: transparent;
+    color: #ffffff;
+
+    border: 1px solid rgba(255,255,255,0.65);
+}
+
+
+.landstack-hero-secondary:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+
+/* =========================================================
+   COMMON HOME SECTION
+   ========================================================= */
+
+.landstack-home-section {
+    width: 100%;
+    max-width: 1250px;
+
+    margin: 0 auto;
+    padding: 55px 6%;
+}
+
+
+.landstack-section-heading {
+    text-align: center;
+
+    margin-bottom: 32px;
+}
+
+
+.landstack-section-heading h2 {
+    margin: 0 0 8px;
+
+    color: var(--ls-green-dark);
+
+    font-size: 30px;
+}
+
+
+.landstack-section-heading p {
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    color: var(--ls-home-muted);
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   ABOUT LANDSTACK
+   ========================================================= */
+
+.landstack-about {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 35px;
+    align-items: center;
+}
+
+
+.landstack-about-text h2 {
+    margin-top: 0;
+
+    color: var(--ls-green-dark);
+    font-size: 30px;
+}
+
+
+.landstack-about-text p {
+    color: var(--ls-home-muted);
+
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+
+.landstack-about-highlight {
+    padding: 25px;
+
+    background: #ffffff;
+
+    border: 1px solid #d5e5da;
+    border-left: 5px solid var(--ls-green-main);
+
+    border-radius: 8px;
+
+    box-shadow: 0 5px 18px rgba(18,107,58,0.08);
+}
+
+
+.landstack-about-highlight strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--ls-green-dark);
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   QUICK SERVICES
+   ========================================================= */
+
+.landstack-services-section {
+    background: var(--ls-green-soft);
+}
+
+
+.landstack-service-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+
+.landstack-service-card {
+    min-height: 145px;
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #d4e2d9;
+    border-top: 4px solid var(--ls-green-main);
+
+    border-radius: 8px;
+
+    box-shadow: 0 4px 15px rgba(18,107,58,0.07);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.landstack-service-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 22px rgba(18,107,58,0.13);
+}
+
+
+.landstack-service-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    background: var(--ls-green-light);
+
+    color: var(--ls-green-dark);
+
+    border-radius: 50%;
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+
+.landstack-service-card h3 {
+    margin: 0 0 6px;
+
+    color: var(--ls-green-dark);
+
+    font-size: 17px;
+}
+
+
+.landstack-service-card p {
+    margin: 0;
+
+    color: var(--ls-home-muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   HOW LANDSTACK WORKS
+   ========================================================= */
+
+.landstack-flow {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+
+    position: relative;
+}
+
+
+.landstack-flow-step {
+    position: relative;
+
+    padding: 22px 15px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #d7e3db;
+
+    border-radius: 8px;
+}
+
+
+.landstack-flow-number {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 10px;
+
+    background: var(--ls-green-main);
+    color: #ffffff;
+
+    border-radius: 50%;
+
+    font-weight: 800;
+}
+
+
+.landstack-flow-step h3 {
+    margin: 0 0 5px;
+
+    color: var(--ls-green-dark);
+
+    font-size: 16px;
+}
+
+
+.landstack-flow-step p {
+    margin: 0;
+
+    color: var(--ls-home-muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   AUTH MODAL
+   ========================================================= */
+
+.landstack-auth-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(3, 34, 19, 0.68);
+
+    z-index: 9999;
+}
+
+
+.landstack-auth-window {
+    position: relative;
+
+    width: 100%;
+    max-width: 440px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border-top: 5px solid var(--ls-green-main);
+    border-radius: 10px;
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.25);
+}
+
+
+.landstack-auth-window h2 {
+    margin: 0 0 8px;
+
+    color: var(--ls-green-dark);
+
+    font-size: 24px;
+}
+
+
+.landstack-auth-window > p {
+    color: var(--ls-home-muted);
+}
+
+
+.landstack-auth-close {
+    position: absolute;
+
+    top: 10px;
+    right: 12px;
+
+    width: 34px;
+    min-height: 34px;
+
+    margin: 0;
+
+    padding: 0;
+
+    background: transparent;
+
+    color: #5d6d64;
+
+    border: 0;
+
+    font-size: 23px;
+}
+
+
+.landstack-auth-close:hover {
+    background: #edf5ef;
+    color: var(--ls-green-dark);
+}
+
+
+.landstack-auth-window button:not(.landstack-auth-close) {
+    background: var(--ls-green-main);
+    border-color: var(--ls-green-main);
+}
+
+
+.landstack-auth-window button:not(.landstack-auth-close):hover {
+    background: var(--ls-green-dark);
+    border-color: var(--ls-green-dark);
+}
+
+
+.landstack-auth-switch {
+    text-align: center;
+
+    margin-top: 15px;
+
+    color: var(--ls-home-muted);
+    font-size: 13px;
+}
+
+
+.landstack-auth-switch button {
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    color: var(--ls-green-main) !important;
+
+    font-weight: 700;
+}
+
+
+.landstack-auth-switch button:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   VIEW SELECTION WINDOW
+   ========================================================= */
+
+#viewSelection {
+    width: 100%;
+    max-width: 560px;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 0;
+    border-top: 5px solid var(--ls-green-main);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.20);
+}
+
+
+#viewSelection h2 {
+    color: var(--ls-green-dark);
+}
+
+
+.landstack-view-choice {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+
+    margin-top: 20px;
+}
+
+
+.landstack-view-card {
+    width: 100% !important;
+
+    min-height: 145px;
+
+    margin: 0 !important;
+
+    padding: 20px !important;
+
+    text-align: left;
+
+    background: #ffffff !important;
+
+    color: var(--ls-green-dark) !important;
+
+    border: 2px solid #d5e5da !important;
+
+    border-radius: 8px !important;
+}
+
+
+.landstack-view-card:hover {
+    background: var(--ls-green-light) !important;
+
+    border-color: var(--ls-green-main) !important;
+}
+
+
+.landstack-view-card strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 18px;
+}
+
+
+.landstack-view-card span {
+    display: block;
+
+    color: var(--ls-home-muted);
+
+    font-size: 12px;
+
+    font-weight: 400;
+}
+
+
+.landstack-officer-key {
+    margin-top: 18px;
+
+    padding: 18px;
+
+    background: var(--ls-green-soft);
+
+    border: 1px solid #cfe1d5;
+
+    border-radius: 7px;
+}
+
+
+/* =========================================================
+   HOME FOOTER
+   ========================================================= */
+
+.landstack-home-footer {
+    padding: 25px 6%;
+
+    background: var(--ls-green-dark);
+
+    color: #dcece2;
+
+    text-align: center;
+
+    border-top: 4px solid var(--ls-gold);
+
+    font-size: 13px;
+}
+
+
+.landstack-home-footer strong {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   MOBILE HOMEPAGE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .landstack-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .landstack-nav {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .landstack-hero {
+        min-height: 430px;
+    }
+
+    .landstack-about {
+        grid-template-columns: 1fr;
+    }
+
+    .landstack-service-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .landstack-flow {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+@media (max-width: 560px) {
+
+    .landstack-hero-content {
+        padding: 45px 7%;
+    }
+
+    .landstack-hero h2 {
+        font-size: 34px;
+    }
+
+    .landstack-hero p {
+        font-size: 15px;
+    }
+
+    .landstack-service-grid,
+    .landstack-flow,
+    .landstack-view-choice {
+        grid-template-columns: 1fr;
+    }
+
+    .landstack-auth-window {
+        padding: 23px;
+    }
+
+}
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     MAIN APPLICATION
+     ========================================================= -->
+
+
+
+    <!-- =========================================================
+     LANDSTACK HOMEPAGE
+     ========================================================= -->
+
+<div id="landStackHome">
+<div id="authBox" style="display:none;"></div>
+
+    <!-- =====================================================
+         TOP NAVIGATION
+         ===================================================== -->
+
+    <header class="landstack-topbar">
+
+        <div class="landstack-brand">
+
+            <div class="landstack-brand-mark">
+    <img src="logo.jpg" alt="LandStack Logo">
+</div>
+
+            <div class="landstack-brand-text">
+
+                <strong>
+                    LandStack
+                </strong>
+
+                <span>
+                    Digital Land Governance Platform
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="landstack-nav">
+
+            <button
+                type="button"
+                onclick="document.getElementById('landStackHome').scrollIntoView({behavior:'smooth'})"
+            >
+                Home
+            </button>
+
+            <button
+                type="button"
+                onclick="document.getElementById('landstackServices').scrollIntoView({behavior:'smooth'})"
+            >
+                Services
+            </button>
+
+            <button
+                type="button"
+                onclick="document.getElementById('landstackAbout').scrollIntoView({behavior:'smooth'})"
+            >
+                About
+            </button>
+
+            <button
+                type="button"
+                onclick="document.getElementById('landstackContact').scrollIntoView({behavior:'smooth'})"
+            >
+                Contact
+            </button>
+
+
+            <!-- Existing language selector ID preserved -->
+
+            <select
+                id="languageSelector"
+                aria-label="Language"
+                style="
+                    width:auto;
+                    min-width:105px;
+                    padding:7px 10px;
+                    margin:0 4px;
+                    border:1px solid rgba(255,255,255,0.35);
+                    border-radius:4px;
+                    background:#ffffff;
+                    color:#173b2a;
+                    font-size:13px;
+                    font-weight:600;
+                    cursor:pointer;
+                "
+            >
+
+                <option value="en">
+                    English
+                </option>
+
+                <option value="te">
+                    తెలుగు
+                </option>
+
+            </select>
+
+
+            <button
+                type="button"
+                class="landstack-login-btn"
+                id="openLoginBtn"
+            >
+                Login
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="landstack-hero">
+
+        <div class="landstack-hero-content">
+
+            <span class="landstack-hero-tag">
+                DIGITAL LAND GOVERNANCE
+            </span>
+
+
+            <h2>
+                Smarter Land Services for a Connected India
+            </h2>
+
+
+            <p>
+                LandStack brings land records, maps, verification,
+                planning information and public services together
+                through one digital platform.
+            </p>
+
+
+            <div class="landstack-hero-actions">
+
+                <button
+                    type="button"
+                    class="landstack-hero-primary"
+                    id="heroLoginBtn"
+                >
+                    Access Land Services
+                </button>
+
+
+                <button
+                    type="button"
+                    class="landstack-hero-secondary"
+                    onclick="document.getElementById('landstackServices').scrollIntoView({behavior:'smooth'})"
+                >
+                    Explore Services
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ABOUT LANDSTACK
+         ===================================================== -->
+
+    <section
+        class="landstack-home-section"
+        id="landstackAbout"
+    >
+
+        <div class="landstack-about">
+
+            <div class="landstack-about-text">
+
+                <h2>
+                    About LandStack
+                </h2>
+
+                <p>
+                    LandStack is an integrated digital platform
+                    designed to bring important land-related
+                    information and services together in one place.
+                </p>
+
+                <p>
+                    It connects spatial information, parcel
+                    identification, land records, verification
+                    information and planning-related data to make
+                    land governance easier to understand and access.
+                </p>
+
+                <p>
+                    The platform is designed for both citizens and
+                    authorized users working with land information,
+                    providing a clear and organized digital
+                    interface for land services.
+                </p>
+
+            </div>
+
+
+            <div class="landstack-about-highlight">
+
+                <strong>
+                    One Platform. Multiple Land Services.
+                </strong>
+
+                <p>
+                    Search a parcel, explore the land map, view
+                    available information, verify records and
+                    generate reports through a unified digital
+                    system.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK SERVICES
+         ===================================================== -->
+
+    <section
+        class="landstack-services-section"
+        id="landstackServices"
+    >
+
+        <div class="landstack-home-section">
+
+            <div class="landstack-section-heading">
+
+                <h2>
+                    Quick Services
+                </h2>
+
+                <p>
+                    Access commonly used land information and
+                    digital services through LandStack.
+                </p>
+
+            </div>
+
+
+            <div class="landstack-service-grid">
+
+
+                <div class="landstack-service-card">
+
+                    <div class="landstack-service-icon">
+                        01
+                    </div>
+
+                    <h3>
+                        Parcel Search
+                    </h3>
+
+                    <p>
+                        Search land parcels using available
+                        parcel or survey information.
+                    </p>
+
+                </div>
+
+
+                <div class="landstack-service-card">
+
+                    <div class="landstack-service-icon">
+                        02
+                    </div>
+
+                    <h3>
+                        Land Map
+                    </h3>
+
+                    <p>
+                        Explore mapped parcels and their
+                        spatial information.
+                    </p>
+
+                </div>
+
+
+                <div class="landstack-service-card">
+
+                    <div class="landstack-service-icon">
+                        03
+                    </div>
+
+                    <h3>
+                        Land Details
+                    </h3>
+
+                    <p>
+                        View available information associated
+                        with a selected parcel.
+                    </p>
+
+                </div>
+
+
+                <div class="landstack-service-card">
+
+                    <div class="landstack-service-icon">
+                        04
+                    </div>
+
+                    <h3>
+                        Verification
+                    </h3>
+
+                    <p>
+                        Review important land information and
+                        verification details.
+                    </p>
+
+                </div>
+
+
+                <div class="landstack-service-card">
+
+                    <div class="landstack-service-icon">
+                        05
+                    </div>
+
+                    <h3>
+                        Planning Information
+                    </h3>
+
+                    <p>
+                        Understand planning and land-use
+                        information connected with parcels.
+                    </p>
+
+                </div>
+
+
+                <div class="landstack-service-card">
+
+                    <div class="landstack-service-icon">
+                        06
+                    </div>
+
+                    <h3>
+                        Digital Reports
+                    </h3>
+
+                    <p>
+                        Generate and download organized
+                        land information reports.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOW LANDSTACK WORKS
+         ===================================================== -->
+
+    <section class="landstack-home-section">
+
+        <div class="landstack-section-heading">
+
+            <h2>
+                How LandStack Works
+            </h2>
+
+            <p>
+                A simple digital journey from finding a parcel
+                to accessing relevant land information.
+            </p>
+
+        </div>
+
+
+        <div class="landstack-flow">
+
+
+            <div class="landstack-flow-step">
+
+                <div class="landstack-flow-number">
+                    1
+                </div>
+
+                <h3>
+                    Search
+                </h3>
+
+                <p>
+                    Find the required land parcel.
+                </p>
+
+            </div>
+
+
+            <div class="landstack-flow-step">
+
+                <div class="landstack-flow-number">
+                    2
+                </div>
+
+                <h3>
+                    View
+                </h3>
+
+                <p>
+                    Explore the parcel on the digital map.
+                </p>
+
+            </div>
+
+
+            <div class="landstack-flow-step">
+
+                <div class="landstack-flow-number">
+                    3
+                </div>
+
+                <h3>
+                    Verify
+                </h3>
+
+                <p>
+                    Review available land information.
+                </p>
+
+            </div>
+
+
+            <div class="landstack-flow-step">
+
+                <div class="landstack-flow-number">
+                    4
+                </div>
+
+                <h3>
+                    Access
+                </h3>
+
+                <p>
+                    Use services and generate reports.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CONTACT / INFORMATION
+         ===================================================== -->
+
+    <section
+        class="landstack-home-section"
+        id="landstackContact"
+    >
+
+        <div class="landstack-section-heading">
+
+            <h2>
+                Digital Land Services
+            </h2>
+
+            <p>
+                LandStack provides a unified interface for
+                accessing land-related digital services,
+                information and spatial data.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOME FOOTER
+         ===================================================== -->
+
+    <footer class="landstack-home-footer">
+
+        <strong>
+            LandStack
+        </strong>
+
+        <br>
+
+        Digital Land Governance Platform
+
+        <br><br>
+
+        Prototype Demonstration Platform
+
+    </footer>
+
+</div>
+
+
+
+<!-- =========================================================
+     LOGIN MODAL
+     ========================================================= -->
+
+<div
+    id="loginModal"
+    class="landstack-auth-overlay"
+    style="display:none;"
+>
+
+    <div class="landstack-auth-window">
+
+        <button
+            type="button"
+            class="landstack-auth-close"
+            id="closeLoginBtn"
+            aria-label="Close login"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Welcome to LandStack
+        </h2>
+
+        <p>
+            Login to access LandStack services.
+        </p>
+
+
+        <label for="loginEmail">
+            Email Address
+        </label>
+
+        <input
+            id="loginEmail"
+            type="email"
+            autocomplete="username"
+            placeholder="Enter your email address"
+        >
+
+
+        <label for="loginPassword">
+            Password
+        </label>
+
+        <input
+            id="loginPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+        >
+
+
+        <!-- Show Password -->
+
+        <label
+            style="
+                display:flex;
+                align-items:center;
+                gap:8px;
+                margin:7px 0 5px;
+                font-size:13px;
+                font-weight:500;
+                color:#5f7067;
+            "
+        >
+
+            <input
+                type="checkbox"
+                id="showLoginPassword"
+                style="
+                    width:auto;
+                    margin:0;
+                "
+            >
+
+            Show Password
+
+        </label>
+
+
+        <button
+            id="loginBtn"
+        >
+            Login
+        </button>
+
+
+        <p
+            id="loginMessage"
+        ></p>
+
+
+        <div class="landstack-auth-switch">
+
+            New user?
+
+            <button
+                type="button"
+                id="openRegisterBtn"
+            >
+                Create Account
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     REGISTER MODAL
+     ========================================================= -->
+
+<div
+    id="registerModal"
+    class="landstack-auth-overlay"
+    style="display:none;"
+>
+
+    <div class="landstack-auth-window">
+
+        <button
+            type="button"
+            class="landstack-auth-close"
+            id="closeRegisterBtn"
+            aria-label="Close registration"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Create Your LandStack Account
+        </h2>
+
+        <p>
+            Create an account to access digital land services.
+        </p>
+
+
+        <label for="fullName">
+            Full Name
+        </label>
+
+        <input
+            id="fullName"
+            type="text"
+            autocomplete="name"
+            placeholder="Enter your full name"
+        >
+
+
+        <label for="registerEmail">
+            Email Address
+        </label>
+
+        <input
+            id="registerEmail"
+            type="email"
+            autocomplete="off"
+            placeholder="Enter your email address"
+        >
+
+
+        <label for="registerPassword">
+            Password
+        </label>
+
+        <input
+            id="registerPassword"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Create a password"
+        >
+
+
+        <button
+            id="registerBtn"
+        >
+            Create Account
+        </button>
+
+
+        <p
+            id="registerMessage"
+        ></p>
+
+
+        <div class="landstack-auth-switch">
+
+            Already have an account?
+
+            <button
+                type="button"
+                id="backToLoginBtn"
+            >
+                Login
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     VIEW SELECTION
+     ========================================================= -->
+
+<div
+    id="viewSelection"
+    class="landstack-auth-overlay"
+    style="display:none;"
+>
+
+    <div class="landstack-auth-window">
+
+        <h2>
+            Choose Your LandStack View
+        </h2>
+
+        <p>
+            Select how you would like to access the platform.
+        </p>
+
+
+        <div class="landstack-view-choice">
+
+
+            <button
+                id="citizenViewBtn"
+                class="landstack-view-card"
+            >
+
+                <strong>
+                    Citizen View
+                </strong>
+
+                <span>
+                    Search parcels, explore maps,
+                    view land information and access
+                    citizen services.
+                </span>
+
+            </button>
+
+
+            <button
+                id="officerViewBtn"
+                class="landstack-view-card"
+            >
+
+                <strong>
+                    Officer View
+                </strong>
+
+                <span>
+                    Access parcel verification,
+                    administrative information and
+                    officer services.
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             OFFICER ACCESS
+             ================================================= -->
+
+        <div
+            id="officerKeyBox"
+            class="landstack-officer-key"
+            style="display:none;"
+        >
+
+            <h2>
+                Officer Authentication
+            </h2>
+
+            <p>
+                Enter the authorized officer access key
+                configured for this prototype.
+            </p>
+
+
+            <label for="officerKey">
+                Officer Access Key
+            </label>
+
+            <input
+                type="password"
+                id="officerKey"
+                placeholder="Enter 6-digit access key"
+                inputmode="numeric"
+                maxlength="6"
+            >
+
+
+            <p
+                style="
+                    font-size:13px;
+                    color:#5f7067;
+                    margin-top:8px;
+                "
+            >
+
+                Prototype Officer Key:
+                <strong>
+                    482731
+                </strong>
+
+            </p>
+
+
+            <button
+                id="officerAccessBtn"
+            >
+                Enter Officer Portal
+            </button>
+
+
+            <p
+                id="officerMessage"
+            ></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- =====================================================
+         CITIZEN VIEW
+         ===================================================== -->
+
+    <div
+        id="citizenView"
+        style="display: none;"
+    >
+
+
+        <!-- Citizen Header -->
+
+        <div class="citizen-app-header">
+
+            <div>
+
+                <h1>
+                    LandStack
+                </h1>
+
+                <p>
+                    Digital Land Information System
+                </p>
+
+            </div>
+
+
+            <div
+                class="citizen-status"
+            >
+                Citizen Portal
+            </div>
+
+        </div>
+
+
+        <!-- Citizen Toolbar -->
+
+        <div class="citizen-toolbar">
+
+            <button
+                id="mapViewBtn"
+            >
+                Map View
+            </button>
+
+            <button
+                id="resetMapBtn"
+            >
+                Reset Map
+            </button>
+
+            <button
+                id="clearSelectionBtn"
+            >
+                Clear Selection
+            </button>
+
+            <button
+                id="toolbarSearchBtn"
+            >
+                Search Parcel
+            </button>
+
+        </div>
+
+
+        <!-- Citizen Main Content -->
+
+        <div class="citizen-content">
+
+            <div class="citizen-layout">
+
+
+                <!-- ==========================================
+                     CITIZEN SIDEBAR
+                     ========================================== -->
+
+                <div class="citizen-sidebar">
+
+                    <h3>
+                        Land Parcel Services
+                    </h3>
+
+
+                    <div
+                        class="parcel-count-card"
+                    >
+
+                        <span>
+                            Total GIS Parcels
+                        </span>
+
+                        <strong
+                            id="parcelCount"
+                        >
+                            0
+                        </strong>
+
+                        <span>
+                            Integrated demonstration dataset
+                        </span>
+
+                    </div>
+
+
+                    <!-- Search -->
+
+                    <div
+                        id="parcelSearchSection"
+                        class="search-section"
+                    >
+
+                        <h3>
+                            Search Parcel
+                        </h3>
+
+
+                        <label
+                            for="lpSearch"
+                        >
+                            LP Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="lpSearch"
+                            placeholder="Enter LP Number"
+                        >
+
+
+                        <label
+                            for="surveySearch"
+                        >
+                            Survey Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="surveySearch"
+                            placeholder="Enter Survey Number"
+                        >
+
+
+                        <label
+                            for="ulpinSearch"
+                        >
+                            ULPIN
+                        </label>
+
+                        <input
+                            type="text"
+                            id="ulpinSearch"
+                            placeholder="Enter ULPIN"
+                        >
+
+
+                        <button
+                            id="searchParcelBtn"
+                        >
+                            Search Parcel
+                        </button>
+
+                    </div>
+
+
+                    <!-- ==========================================
+                         MY LAND
+                         ========================================== -->
+
+                    <div
+                        id="myLandSection"
+                    >
+
+                        <h3>
+                            My Land / Detailed Information
+                        </h3>
+
+
+                        <p>
+                            Access detailed land information
+                            through consent-based verification.
+                        </p>
+
+
+                        <button
+                            id="myLandDetailsBtn"
+                        >
+                            My Land Details
+                        </button>
+
+
+                        <div
+                            id="myLandOtpBox"
+                            style="
+                                display:none;
+                                margin-top:15px;
+                            "
+                        >
+
+                            <hr>
+
+
+                            <p>
+                                Select a parcel from the map
+                                before entering the OTP.
+                            </p>
+
+
+                            <input
+                                type="text"
+                                id="myLandOtp"
+                                placeholder="Enter 6-digit OTP"
+                                inputmode="numeric"
+                                maxlength="6"
+                            >
+
+
+                            <p>
+                                In the real system, a short-lived
+                                OTP would be sent to the registered
+                                landowner for consent-based access.
+                            </p>
+
+
+                            <p>
+                                Prototype OTP:
+                                <strong>613824</strong>
+                            </p>
+
+
+                            <button
+                                id="verifyMyLandOtpBtn"
+                            >
+                                Verify OTP
+                            </button>
+
+
+                            <p
+                                id="myLandOtpMessage"
+                            ></p>
+
+                        </div>
+
+
+                        <div
+                            id="citizenDetailedParcelInfo"
+                            style="
+                                display:none;
+                                margin-top:20px;
+                            "
+                        ></div>
+
+                    </div>
+
+
+                    <!-- ==========================================
+                         PUBLIC PARCEL INFORMATION
+                         ========================================== -->
+
+                    <div
+                        id="parcelInfo"
+                        class="parcel-info"
+                    >
+
+                        <h3>
+                            Parcel Information
+                        </h3>
+
+                        <p>
+                            Select a parcel on the map
+                            to view its public information.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        id="citizenBackBtn"
+                        style="
+                            width:100%;
+                            margin-top:15px;
+                        "
+                    >
+                        Back to Portal Selection
+                    </button>
+
+                </div>
+
+
+                <!-- ==========================================
+                     CITIZEN MAP
+                     ========================================== -->
+
+                <div class="map-panel">
+
+                    <div
+                        class="map-panel-header"
+                    >
+
+                        <div>
+
+                            <h2>
+                                Parcel GIS Map
+                            </h2>
+
+                            <p>
+                                Select a mapped parcel to
+                                inspect available information.
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            id="mapSelectionStatus"
+                            class="map-selection-status"
+                        >
+                            No parcel selected
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="map"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         OFFICER VIEW
+         ===================================================== -->
+
+    <div
+        id="officerView"
+        style="display: none;"
+    >
+
+
+        <!-- Officer Header -->
+
+        <div
+            class="officer-app-header"
+        >
+
+            <div>
+
+                <h1>
+                    LandStack
+                </h1>
+
+                <p>
+                    Digital Land Governance Platform
+                </p>
+
+            </div>
+
+
+            <div
+                class="officer-header-status"
+            >
+
+                <span
+                    class="status-dot"
+                ></span>
+
+                Officer Portal
+
+            </div>
+
+        </div>
+
+
+        <!-- Officer Navigation -->
+
+        <div
+            class="officer-toolbar"
+        >
+
+            <button
+                id="officerDashboardBtn"
+            >
+                Dashboard
+            </button>
+
+            <button
+                id="officerMapBtn"
+            >
+                Parcel Map
+            </button>
+
+            <button
+                id="officerSearchBtn"
+            >
+                Search Parcel
+            </button>
+
+            <button
+                id="officerVerificationBtn"
+            >
+                Verification
+            </button>
+
+            <button
+                id="officerVerificationQueueBtn"
+            >
+                Verification Queue
+            </button>
+
+            <button
+                id="officerBackBtn"
+            >
+                Back
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             OFFICER DASHBOARD
+             ================================================= -->
+
+        <div
+            id="officerDashboard"
+            class="officer-section"
+        >
+
+            <div
+                class="officer-welcome"
+            >
+
+                <h2>
+                    Officer Dashboard
+                </h2>
+
+                <p>
+                    Integrated land-record review,
+                    GIS inspection and verification services.
+                </p>
+
+            </div>
+
+
+            <!-- Statistics -->
+
+            <div
+                class="officer-stat-grid"
+            >
+
+                <div
+                    class="officer-stat-card"
+                >
+
+                    <span
+                        class="officer-stat-title"
+                    >
+                        Total Parcels
+                    </span>
+
+                    <strong
+                        id="officerParcelCount"
+                    >
+                        229
+                    </strong>
+
+                    <span>
+                        GIS parcels in prototype
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="officer-stat-card"
+                >
+
+                    <span
+                        class="officer-stat-title"
+                    >
+                        GIS Status
+                    </span>
+
+                    <strong>
+                        Active
+                    </strong>
+
+                    <span>
+                        Parcel map connected
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="officer-stat-card"
+                >
+
+                    <span
+                        class="officer-stat-title"
+                    >
+                        Record Integration
+                    </span>
+
+                    <strong>
+                        Connected
+                    </strong>
+
+                    <span>
+                        PostgreSQL integrated view
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="officer-stat-card"
+                >
+
+                    <span
+                        class="officer-stat-title"
+                    >
+                        Portal Access
+                    </span>
+
+                    <strong>
+                        Authorized
+                    </strong>
+
+                    <span>
+                        Verified officer session
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quick Actions -->
+
+            <div
+                class="officer-panel"
+            >
+
+                <h3>
+                    Quick Actions
+                </h3>
+
+<div
+    class="officer-action-grid"
+>
+
+    <button
+        id="officerOpenMapBtn"
+    >
+        Open Parcel Map
+    </button>
+
+
+    <button
+        id="officerOpenSearchBtn"
+    >
+        Search Land Parcel
+    </button>
+
+
+    <button
+        id="officerOpenVerificationBtn"
+    >
+        Open Verification
+    </button>
+
+
+    <button
+        id="officerOpenAuditBtn"
+    >
+        Audit History
+    </button>
+
+</div>
+
+            </div>
+
+
+            <!-- System Information -->
+
+            <div
+                class="officer-panel"
+            >
+
+                <h3>
+                    LandStack System Status
+                </h3>
+
+
+                <div
+                    class="officer-info-grid"
+                >
+
+                    <div>
+
+                        <strong>
+                            GIS
+                        </strong>
+
+                        <span>
+                            229 parcel geometries available
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Database
+                        </strong>
+
+                        <span>
+                            PostgreSQL integration active
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Authentication
+                        </strong>
+
+                        <span>
+                            Firebase email verification
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Environment
+                        </strong>
+
+                        <span>
+                            Development / Demonstration
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+<!-- =================================================
+     OFFICER AUDIT HISTORY
+     ================================================= -->
+
+<div
+    id="officerAuditHistory"
+    class="officer-section"
+    style="display: none;"
+>
+
+    <div
+        class="officer-welcome"
+    >
+
+        <h2>
+            Audit History
+        </h2>
+
+        <p>
+            Recent officer actions recorded in LandStack.
+        </p>
+
+    </div>
+
+
+    <div
+        class="officer-panel"
+    >
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:12px;
+                margin-bottom:16px;
+            "
+        >
+
+            <h3
+                style="margin:0;"
+            >
+                Recent Activity
+            </h3>
+
+            <button
+                id="officerRefreshAuditBtn"
+            >
+                Refresh
+            </button>
+
+        </div>
+
+
+        <div
+            id="officerAuditList"
+        >
+
+            <p>
+                Loading audit history...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="officer-panel"
+    >
+
+        <button
+            id="officerAuditBackBtn"
+        >
+            Back to Dashboard
+        </button>
+
+    </div>
+
+</div>
+
+        <!-- =================================================
+             OFFICER GIS MAP
+             ================================================= -->
+
+        <div
+            id="officerMapSection"
+            class="officer-section"
+            style="display:none;"
+        >
+
+            <div
+                class="officer-section-header"
+            >
+
+                <div>
+
+                    <h2>
+                        Parcel GIS Map
+                    </h2>
+
+                    <p>
+                        Inspect integrated parcel records
+                        through the map.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="officerMapSelectionStatus"
+                    class="officer-map-status"
+                >
+                    No parcel selected
+                </div>
+
+            </div>
+
+
+            <div
+                class="officer-map-toolbar"
+            >
+
+                <button
+                    id="officerResetMapBtn"
+                >
+                    Reset Map
+                </button>
+
+
+                <button
+                    id="officerClearSelectionBtn"
+                >
+                    Clear Selection
+                </button>
+
+            </div>
+
+
+            <div
+                id="officerMap"
+            ></div>
+
+
+            <div
+                id="officerParcelInfo"
+                class="officer-parcel-panel"
+            >
+
+                <h3>
+                    Selected Parcel
+                </h3>
+
+                <p>
+                    Select a parcel to inspect
+                    its integrated information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             OFFICER SEARCH
+             ================================================= -->
+
+        <div
+            id="officerSearchSection"
+            class="officer-section"
+            style="display:none;"
+        >
+
+            <div
+                class="officer-section-header"
+            >
+
+                <div>
+
+                    <h2>
+                        Parcel Search
+                    </h2>
+
+                    <p>
+                        Search using LP Number,
+                        Survey Number or ULPIN.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="officer-search-panel"
+            >
+
+                <label
+                    for="officerLpSearch"
+                >
+                    LP Number
+                </label>
+
+                <input
+                    type="text"
+                    id="officerLpSearch"
+                    placeholder="Enter LP Number"
+                >
+
+
+                <label
+                    for="officerSurveySearch"
+                >
+                    Survey Number
+                </label>
+
+                <input
+                    type="text"
+                    id="officerSurveySearch"
+                    placeholder="Enter Survey Number"
+                >
+
+
+                <label
+                    for="officerUlpINSearch"
+                >
+                    ULPIN
+                </label>
+
+                <input
+                    type="text"
+                    id="officerUlpINSearch"
+                    placeholder="Enter ULPIN"
+                >
+
+
+                <div
+                    class="officer-search-buttons"
+                >
+
+                    <button
+                        id="officerSearchParcelBtn"
+                    >
+                        Search Parcel
+                    </button>
+
+
+                    <button
+                        id="officerClearSearchBtn"
+                    >
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="officerSearchMessage"
+                ></p>
+
+            </div>
+
+
+            <div
+                id="officerSearchResult"
+                class="officer-parcel-panel"
+            >
+
+                <h3>
+                    Search Result
+                </h3>
+
+                <p>
+                    Enter a parcel reference
+                    to begin the search.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             OFFICER VERIFICATION
+             ================================================= -->
+
+        <div
+            id="officerVerificationSection"
+            class="officer-section"
+            style="display:none;"
+        >
+
+            <div
+                class="officer-section-header"
+            >
+
+                <div>
+
+                    <h2>
+                        Parcel Verification
+                    </h2>
+
+                    <p>
+                        Review integrated land information
+                        and record verification status.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Verification Summary -->
+
+            <div
+                class="verification-status-card"
+            >
+
+                <div>
+
+                    <span>
+                        Current Status
+                    </span>
+
+                    <strong
+                        id="officerVerificationStatus"
+                    >
+                        No parcel selected
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Parcel Reference
+                    </span>
+
+                    <strong
+                        id="officerVerificationParcel"
+                    >
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Verification Categories -->
+
+            <div
+                class="verification-grid"
+            >
+
+                <div
+                    class="verification-card"
+                >
+
+                    <h3>
+                        Ownership / ROR
+                    </h3>
+
+                    <p
+                        id="verificationOwnership"
+                    >
+                        Not available
+                    </p>
+
+                    <button
+                        type="button"
+                    >
+                        Review Ownership
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="verification-card"
+                >
+
+                    <h3>
+                        Registration
+                    </h3>
+
+                    <p
+                        id="verificationRegistration"
+                    >
+                        Not available
+                    </p>
+
+                    <button
+                        type="button"
+                    >
+                        Review Registration
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="verification-card"
+                >
+
+                    <h3>
+                        Land Use & Planning
+                    </h3>
+
+                    <p
+                        id="verificationLandUse"
+                    >
+                        Not available
+                    </p>
+
+                    <button
+                        type="button"
+                    >
+                        Review Land Use
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="verification-card"
+                >
+
+                    <h3>
+                        Property Tax
+                    </h3>
+
+                    <p
+                        id="verificationTax"
+                    >
+                        Not available
+                    </p>
+
+                    <button
+                        type="button"
+                    >
+                        Review Tax
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="verification-card"
+                >
+
+                    <h3>
+                        Restrictions
+                    </h3>
+
+                    <p
+                        id="verificationRestrictions"
+                    >
+                        Not available
+                    </p>
+
+                    <button
+                        type="button"
+                    >
+                        Review Restrictions
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="verification-card"
+                >
+
+                    <h3>
+                        Encumbrance
+                    </h3>
+
+                    <p
+                        id="verificationEncumbrance"
+                    >
+                        Not available
+                    </p>
+
+                    <button
+                        type="button"
+                    >
+                        Review Encumbrance
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Verification Actions -->
+
+            <div
+                class="officer-panel"
+            >
+
+                <h3>
+                    Verification Actions
+                </h3>
+
+                <p>
+                    Record the officer's review outcome
+                    for the selected parcel.
+                </p>
+
+
+                <div
+                    class="verification-actions"
+                >
+
+                    <button
+                        id="markVerifiedBtn"
+                    >
+                        Mark for Verification
+                    </button>
+
+
+                    <button
+                        id="requestReviewBtn"
+                    >
+                        Request Further Review
+                    </button>
+
+
+                    <button
+                        id="viewCompleteRecordBtn"
+                    >
+                        View Complete Record
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             OFFICER FOOTER
+             ================================================= -->
+
+        <div
+            class="officer-footer"
+        >
+
+            <span>
+                LandStack Officer Portal
+            </span>
+
+            <span>
+                Development / Demonstration Environment
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LEAFLET JAVASCRIPT
+     ========================================================= -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+
+<script>
+
+    window.L = L;
+
+</script>
+
+
+<!-- =========================================================
+     LANDSTACK APPLICATION JAVASCRIPT
+     ========================================================= -->
+
+<script
+    type="module"
+    src="app.js"
+></script>
+
+<script src="language.js"></script>
+</body>
+
+</html>

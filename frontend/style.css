@@ -1,0 +1,383 @@
+/* ==================================================
+   LANDSTACK GLOBAL STYLE
+   ================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7f9;
+    color: #1f2937;
+}
+
+
+/* ==================================================
+   AUTH / MAIN BOX
+   ================================================== */
+
+.auth-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==================================================
+   LANDSTACK GIS LAYOUT
+   ================================================== */
+
+.landstack-layout {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    min-height: 700px;
+}
+
+
+/* ==================================================
+   LEFT SIDEBAR
+   ================================================== */
+
+.sidebar {
+    width: 350px;
+    min-width: 350px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+    max-height: 700px;
+}
+
+
+/* ==================================================
+   SIDEBAR HEADER
+   ================================================== */
+
+.sidebar-header {
+    margin-bottom: 18px;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #123b5d;
+}
+
+.sidebar-header p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+
+/* ==================================================
+   STAT CARD
+   ================================================== */
+
+.stat-card {
+    background: #eef5f9;
+    border: 1px solid #d9e7ef;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.stat-card h3 {
+    margin: 0;
+    font-size: 13px;
+    color: #64748b;
+    font-weight: normal;
+}
+
+.stat-card p {
+    margin: 5px 0 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #123b5d;
+}
+
+
+/* ==================================================
+   SEARCH AREA
+   ================================================== */
+
+.search-section {
+    margin-bottom: 18px;
+}
+
+.search-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.sidebar input {
+    width: 100%;
+    padding: 11px 12px;
+    margin-bottom: 9px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+
+    font-size: 14px;
+    outline: none;
+}
+
+.sidebar input:focus {
+    border-color: #2878a8;
+    box-shadow: 0 0 0 2px rgba(40, 120, 168, 0.12);
+}
+
+
+/* ==================================================
+   BUTTONS
+   ================================================== */
+
+.sidebar button {
+    width: 100%;
+    padding: 11px 12px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #176b87;
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: #12576e;
+}
+
+#citizenBackBtn {
+    margin-top: 16px;
+    background: #6b7280;
+}
+
+#citizenBackBtn:hover {
+    background: #4b5563;
+}
+
+
+/* ==================================================
+   DIVIDER
+   ================================================== */
+
+.sidebar hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 4px 0 16px;
+}
+
+
+/* ==================================================
+   PARCEL INFORMATION
+   ================================================== */
+
+#parcelInfo {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 2px;
+}
+
+#parcelInfo h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #123b5d;
+    font-size: 16px;
+}
+
+#parcelInfo h4 {
+    margin-top: 18px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+
+    border-bottom: 1px solid #dbe3e8;
+
+    color: #176b87;
+    font-size: 14px;
+}
+
+#parcelInfo p {
+    margin: 7px 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+#parcelInfo strong {
+    color: #374151;
+}
+
+
+/* ==================================================
+   STATUS BADGES
+   ================================================== */
+
+.status-badge {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 12px;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   MAP AREA
+   ================================================== */
+
+.map-container {
+    flex: 1;
+    min-width: 0;
+
+    background: white;
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ==================================================
+   MAP HEADER
+   ================================================== */
+
+.map-header {
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    background: #123b5d;
+    color: white;
+}
+
+.map-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.map-header span {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+
+/* ==================================================
+   LEAFLET MAP
+   ================================================== */
+
+#map {
+    flex: 1;
+
+    min-height: 640px;
+
+    width: 100%;
+
+    border-radius: 0;
+}
+
+
+/* ==================================================
+   LEAFLET POPUP
+   ================================================== */
+
+.leaflet-popup-content {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   MOBILE RESPONSIVE
+   ================================================== */
+
+@media (max-width: 900px) {
+
+    .landstack-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        max-height: none;
+    }
+
+    .map-container {
+        width: 100%;
+    }
+
+    #map {
+        min-height: 500px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .auth-box {
+        padding: 10px;
+    }
+
+    .sidebar {
+        padding: 14px;
+    }
+
+    .map-header {
+        padding: 0 12px;
+    }
+
+    .map-header h3 {
+        font-size: 14px;
+    }
+
+    .map-header span {
+        display: none;
+    }
+
+}
+.landstack-brand-mark {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.landstack-brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
