@@ -20,7 +20,7 @@ import {
 // ==================================================
 
 const SERVER_URL =
-    "http://localhost:5000";
+    "https://landstack-backend.onrender.com";
 
 const DEMO_LAND_OWNER_OTP =
     "613824";
