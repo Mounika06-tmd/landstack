@@ -10,18 +10,24 @@ const projectId = process.env.FIREBASE_PROJECT_ID || "landstack-66e54";
 
 let credential;
 
-// Use Render environment variables when deployed
 if (
   process.env.FIREBASE_CLIENT_EMAIL &&
   process.env.FIREBASE_PRIVATE_KEY
 ) {
+  let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+  // Handle escaped newlines from Render
+  privateKey = privateKey.replace(/\\n/g, "\n");
+
+  // Remove accidental surrounding quotes
+  privateKey = privateKey.replace(/^"(.*)"$/s, "$1");
+
   credential = cert({
-    projectId: projectId,
+    projectId,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+    privateKey
   });
 } else {
-  // Keep the existing local setup working
   credential = applicationDefault();
 }
 
